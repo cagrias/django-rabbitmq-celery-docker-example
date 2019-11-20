@@ -10,7 +10,7 @@ A dockerized example pub/sub type message queue implementation in django by usin
 
 
 ### Installation
-`docker` and `docker-compose `are needed to be installed to run this project.
+`docker` and `docker-compose` are needed to be installed to run this project.
 
 ```shell
 docker-compose build
