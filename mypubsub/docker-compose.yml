@@ -1,0 +1,81 @@
+version: "3"
+
+services:
+  backend:
+    build:
+      context: .
+    image: backend-image
+    container_name: backend
+    hostname: backend
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    command: >
+      sh -c "wait-for db:5432 && wait-for rabbit:5672 &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8080"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=app
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - DB_PORT=5432
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db
+      - rabbit
+    networks:
+      - shared_network
+
+  rabbit:
+    image: rabbitmq:3-management
+    container_name: rabbit
+    hostname: rabbit
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+      - RABBITMQ_DEFAULT_VHOST=/
+    ports:
+      - "5682:5672"
+      - "15682:15672"
+    networks:
+      - shared_network
+
+  worker:
+    image: backend-image
+    restart: on-failure
+    command: >
+      sh -c "wait-for backend:8080 &&
+             celery worker -B -l info -A mypubsub.celery -s /tmp/celerybeat-schedule"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=app
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - DB_PORT=5432
+    depends_on:
+      - backend
+      - rabbit
+      - db
+    networks:
+      - shared_network
+
+  db:
+    image: postgres:10-alpine
+    container_name: db
+    hostname: db
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "54320:5432"
+    networks:
+      - shared_network
+
+networks:
+  shared_network:
+    driver: bridge
