@@ -4,9 +4,9 @@ A dockerized example pub/sub type message queue implementation in django by usin
 
 ### Pub/Sub Definitions
 
-**Publisher: **A separate RabbitMQ queue producer is declared and added to Celery's default producer_pool, which is pulled and used to publish new messages to that queue in a Celery task.
+**Publisher: ** A separate RabbitMQ queue producer is declared and added to Celery's default producer_pool, which is pulled and used to publish new messages to that queue in a Celery task.
 
-**Consumer: **A custom consumer class is defined and attached to Celery. The class is subscribed to the custom queue that is created/declared with the separate queue producer above. A handle_message callback function is defined in the custom consumer class so that every time a message is published to that particular queue, the consumer's callback is called, which consumes the message and sends an ack to RabbitMQ.
+**Consumer: ** A custom consumer class is defined and attached to Celery. The class is subscribed to the custom queue that is created/declared with the separate queue producer above. A handle_message callback function is defined in the custom consumer class so that every time a message is published to that particular queue, the consumer's callback is called, which consumes the message and sends an ack to RabbitMQ.
 
 
 ### Installation
