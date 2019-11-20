@@ -2,6 +2,7 @@
 A dockerized example pub/sub type message queue implementation in django by using rabbitmq and celery. 
 
 
+
 ### Pub/Sub Definitions
 
 **Publisher:** A separate RabbitMQ queue producer is declared and added to Celery's default producer_pool, which is pulled and used to publish new messages to that queue in a Celery task.
@@ -10,12 +11,16 @@ A dockerized example pub/sub type message queue implementation in django by usin
 
 
 ### Installation
-`docker` and `docker-compose` are needed to be installed to run this project.
+`docker` and `docker-compose` are needed to be installed to run this project. These links can be followed to install both:
+- `docker`: https://docs.docker.com/install/linux/docker-ce/ubuntu/
+- `docker-compose`: https://docs.docker.com/compose/install/
 
+After installation, run:
 ```shell
 docker-compose build
 docker-compose up
 ```
+
 
 ### Usage
 From a web-browser, Postman or an http-library in any language, send a GET request to `http://localhost:8080/api/publish`. The `publish` view will publish a custom JSON message to the queue, which will be followed by the subscription of the same message by the custom consumer class. A successful flow should print `Received message: {'hello': 'world'}` to docker-compose logs.
