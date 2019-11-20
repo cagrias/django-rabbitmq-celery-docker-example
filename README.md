@@ -11,7 +11,7 @@ A dockerized example pub/sub type message queue implementation in django by usin
 
 
 ### Installation
-`docker` and `docker-compose` are needed to be installed to run this project. These links can be followed to install both:
+`docker` and `docker-compose` are needed to be installed to run this project. These links can be followed to install both on Ubuntu:
 - `docker`: https://docs.docker.com/install/linux/docker-ce/ubuntu/
 - `docker-compose`: https://docs.docker.com/compose/install/
 
