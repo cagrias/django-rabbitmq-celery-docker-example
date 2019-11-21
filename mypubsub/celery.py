@@ -23,7 +23,10 @@ app.autodiscover_tasks()
 # setting publisher
 with app.pool.acquire(block=True) as conn:
     exchange = kombu.Exchange(
-        name='myexchange', type='direct', durable=True, channel=conn
+        name='myexchange',
+        type='direct',
+        durable=True,
+        channel=conn,
     )
     exchange.declare()
 
@@ -40,17 +43,19 @@ with app.pool.acquire(block=True) as conn:
     )
     queue.declare()
 
-    # setting consumer
-    class MyConsumerStep(bootsteps.ConsumerStep):
 
-        def get_consumers(self, channel):
-            return [kombu.Consumer(channel,
-                                   queues=[queue],
-                                   callbacks=[self.handle_message],
-                                   accept=['json'])]
+# setting consumer
+class MyConsumerStep(bootsteps.ConsumerStep):
 
-        def handle_message(self, body, message):
-            print('Received message: {0!r}'.format(body))
-            message.ack()
+    def get_consumers(self, channel):
+        return [kombu.Consumer(channel,
+                               queues=[queue],
+                               callbacks=[self.handle_message],
+                               accept=['json'])]
 
-    app.steps['consumer'].add(MyConsumerStep)
+    def handle_message(self, body, message):
+        print('Received message: {0!r}'.format(body))
+        message.ack()
+
+
+app.steps['consumer'].add(MyConsumerStep)

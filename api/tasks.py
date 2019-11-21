@@ -9,6 +9,6 @@ def publish_message(message):
     with app.producer_pool.acquire(block=True) as producer:
         producer.publish(
             message,
-            routing_key='mykey',
             exchange='myexchange',
+            routing_key='mykey',
         )

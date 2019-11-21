@@ -16,12 +16,6 @@ services:
       sh -c "wait-for db:5432 && wait-for rabbit:5672 &&
              python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8080"
-    environment:
-      - DB_HOST=db
-      - DB_NAME=app
-      - DB_USER=postgres
-      - DB_PASS=postgres
-      - DB_PORT=5432
     stdin_open: true
     tty: true
     depends_on:
@@ -50,12 +44,6 @@ services:
     command: >
       sh -c "wait-for backend:8080 &&
              celery worker -B -l info -A mypubsub.celery -s /tmp/celerybeat-schedule"
-    environment:
-      - DB_HOST=db
-      - DB_NAME=app
-      - DB_USER=postgres
-      - DB_PASS=postgres
-      - DB_PORT=5432
     depends_on:
       - backend
       - rabbit
