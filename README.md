@@ -1,9 +1,10 @@
 # django-rabbitmq-celery-docker-example
-A dockerized example pub/sub type message queue implementation in django by using rabbitmq and celery. 
+A dockerized example pub/sub type message queue implementation in django by using rabbitmq and celery. Detailed explanation is published on the Medium story:
+
+https://medium.com/p/20d349dc60b6
 
 
-
-### Pub/Sub Definitions
+### Pub/Sub Role Definitions
 
 **Publisher:** A separate RabbitMQ queue producer is declared and added to Celery's default producer_pool, which is pulled and used to publish new messages to that queue in a Celery task.
 
