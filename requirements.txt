@@ -1,5 +1,5 @@
 celery==4.3.0
 Django==2.2.7
-django-celery-results==1.1.2
+django-celery-results==2.4.0
 kombu==4.6.6
 psycopg2==2.8.4
